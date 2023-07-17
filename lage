@@ -1,0 +1,109 @@
+package org.example;
+
+import org.example.model.Urun;
+import org.example.service.UrunService;
+
+import java.util.Scanner;
+
+/**
+ * Hello world!
+ *
+ */
+public class App {
+    static UrunService urunService = new UrunService();
+
+    public static void main(String[] args) throws Exception {
+        printMenu();
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            String veri = sc.nextLine().toLowerCase();
+            if (veri.length() == 1) {
+                String cikis = String.valueOf(veri.charAt(0));
+                if (cikis.equals("q")) {
+                    System.out.println("İyi Günler.");
+                    break;
+                }
+            }
+
+            try {
+                switch (veri) {
+                    case "1":
+                        System.out.println("Urun Tanımı Yapılacak");
+                        System.out.println("Urun adını giriniz");
+                        String urunAdi = sc.nextLine();
+                        System.out.println("Urun üreticisini giriniz");
+                        String urunUretici = sc.nextLine();
+                        System.out.println("Urun birimi giriniz");
+                        String urunBirim = sc.nextLine();
+                        Urun urun = new Urun();
+                        urun.adi = urunAdi;
+                        urun.uretici = urunUretici;
+                        urun.birim = urunBirim;
+                        urunService.urunTanimlama(urun);
+                        System.out.println("Urun tanımı başarılı bir şekilde yapılmıştır.");
+                        printUrunListesi();
+                        printMenu();
+                        break;
+                    case "2":
+                        printUrunListesi();
+                        printMenu();
+                        break;
+                    case "3":
+                        System.out.println("Urun Girişi Yapılacak");
+                        System.out.println("Urun id giriniz.");
+                        String strUrunId = sc.nextLine();
+                        System.out.println("Urun miktarı giriniz.");
+                        Integer miktar = sc.nextInt();
+                        urunService.urunGirisi(Integer.parseInt(strUrunId), miktar);
+                        System.out.println("Urun miktarı başarılı bir şekilde yapılmıştır.");
+                        printUrunListesi();
+                        printMenu();
+                        break;
+                    case "4":
+                        System.out.println("Urun RafaKoy Yapılacak");
+                        System.out.println("Urun id giriniz.");
+                        String strUrunId2 = sc.nextLine();
+                        System.out.println("Raf bilgisi giriniz.");
+                        String raf = sc.nextLine();
+                        urunService.urunuRafaKoy(Integer.parseInt(strUrunId2), raf);
+                        System.out.println("Urun başarılı bir şekilde rafa koyulmuştur.");
+                        printUrunListesi();
+                        printMenu();
+                        break;
+                    case "5":
+                        System.out.println("Urun Çıkışı Yapılacak");
+                        System.out.println("Urun id giriniz.");
+                        String strUrunId3 = sc.nextLine();
+                        System.out.println("Çıkış yapılacak miktarı bilgisi giriniz.");
+                        String cikisMiktar = sc.nextLine();
+                        urunService.urunCikisi(Integer.parseInt(strUrunId3), Integer.parseInt(cikisMiktar));
+                        System.out.println("Urun çıkışı başarılı bir şekilde yapılmıştır.");
+                        printUrunListesi();
+                        printMenu();
+                        break;
+                    default:
+                        break;
+                }
+            } catch (Exception ex) {
+                System.err.println(ex);
+                printMenu();
+            }
+        }
+    }
+
+    private static void printUrunListesi() {
+        System.out.println("\tid\tismi\tureticisi\tmiktari\tbirimi\traf");
+        System.out.println("\t---------------------------------------------------------------");
+        System.out.println(urunService.urunListele());
+    }
+
+    private static void printMenu() {
+        System.out.println("Çıkış için 'q' giriniz.");
+        System.out.println("Urun Tanımı Yapmak için: 1 giriniz");
+        System.out.println("Urun Listelemek için: 2 giriniz");
+        System.out.println("Urun Girişi için: 3 giriniz");
+        System.out.println("Urun RafaKoy için: 4 giriniz");
+        System.out.println("Urun Çıkışı için: 5 giriniz");
+    }
+
+}
